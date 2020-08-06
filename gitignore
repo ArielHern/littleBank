@@ -2,6 +2,6 @@
 
 # misc
 .env
-
+.vscode
 npm-debug.log*
 
