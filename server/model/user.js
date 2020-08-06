@@ -6,6 +6,10 @@ const schema = new mongoose.Schema({
         minlength: 3,
         required: true,
         unique: true
+    },
+    account: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Account'
     }
 });
 
