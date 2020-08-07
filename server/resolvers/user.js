@@ -4,7 +4,12 @@ const bycrypt = require('bcrypt');
 const User = require('../model/user');
 
 module.exports = {
-    resolver: {
+    resolvers: {
+        Query: {
+            me: (root, args, { currentUser }) => {
+                return currentUser
+            }
+        },
         Mutation: {
             createUser: async (_, args) => {
                 //password encryption

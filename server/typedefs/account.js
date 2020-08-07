@@ -9,13 +9,13 @@ module.exports = {
     }
 
     extend type Query{
-        bankBalance(owner:String!):Int!
+        balance:Int!
     }
     
     extend type Mutation{
-        createAccount(balance:Int!, owner:String!):Account
-        deposit(amount:Int!, owner:String!):Account
-        spend(amount:Int!, owner:String!):Account        
+        createAccount(balance:Int!):Account
+        deposit(amount:Int!):Account
+        spend(amount:Int!):Account        
     }
     `
 }
