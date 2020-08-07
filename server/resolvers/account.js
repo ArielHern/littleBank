@@ -1,40 +1,32 @@
-const { UserInputError } = require('apollo-server');
+const { UserInputError, AuthenticationError } = require('apollo-server');
 
 const Account = require('../model/account');
 const User = require('../model/user');
 
 
 module.exports = {
-    resolver: {
+    resolvers: {
         Query: {
-            bankBalance: async (_, args) => {
+            balance: async (_, args, { currentUser }) => {
+                if (!currentUser) throw new AuthenticationError('you must be logged in')
+
                 try {
-                    const owner = await User.findOne({ name: args.owner });
-                    const account = await Account.findOne({ owner });
+                    const account = await Account.findOne({ owner: currentUser });
                     return account.balance;
                 } catch (error) {
                     throw new UserInputError(error.message, {
                         invalidArgs: args
                     })
                 }
+
             }
         },
         Mutation: {
-            createAccount: async (_, args) => {
-                const account = new Account({ ...args });
-                let owner = await User.findOne({ name: args.owner })
+            createAccount: async (_, args, { currentUser }) => {
+                //Must be log on to create account
+                if (!currentUser) throw new AuthenticationError('you must be logged in')
 
-                if (!owner) {
-                    try {
-                        owner = await new User({ name: args.owner }).save()
-                    }
-                    catch (error) {
-                        throw new UserInputError(error.message, {
-                            invalidArgs: args
-                        });
-                    }
-                }
-                account.owner = owner;
+                const account = new Account({ ...args, owner: currentUser });
                 try {
                     await account.save()
                 } catch (error) {
