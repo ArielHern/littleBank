@@ -1,0 +1,67 @@
+const { UserInputError } = require('apollo-server');
+
+const Account = require('../model/account');
+const User = require('../model/user');
+
+
+module.exports = {
+    resolver: {
+        Query: {
+            bankBalance: async (_, args) => {
+                try {
+                    const owner = await User.findOne({ name: args.owner });
+                    const account = await Account.findOne({ owner });
+                    return account.balance;
+                } catch (error) {
+                    throw new UserInputError(error.message, {
+                        invalidArgs: args
+                    })
+                }
+            }
+        },
+        Mutation: {
+            createAccount: async (_, args) => {
+                const account = new Account({ ...args });
+                let owner = await User.findOne({ name: args.owner })
+
+                if (!owner) {
+                    try {
+                        owner = await new User({ name: args.owner }).save()
+                    }
+                    catch (error) {
+                        throw new UserInputError(error.message, {
+                            invalidArgs: args
+                        });
+                    }
+                }
+                account.owner = owner;
+                try {
+                    await account.save()
+                } catch (error) {
+                    throw new UserInputError(error.message, {
+                        invalidArgs: args
+                    });
+                }
+                return account;
+            },
+
+            deposit: async (_, args) => {
+                const account = Account.findOne({ _id: args._id })
+                account.balance = account.balance + args.balance;
+                await account.save()
+                    .catch((error) => {
+                        throw new UserInputError(error.message);
+                    });
+            },
+            spend: async (_, args) => {
+                const account = Account.findOne({ _id: args._id })
+                account.balance = account.balance - args.balance;
+                await account.save()
+                    .catch((error) => {
+                        throw new UserInputError(error.message);
+                    });
+            }
+        }
+
+    }
+}

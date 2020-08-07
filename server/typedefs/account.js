@@ -1,7 +1,7 @@
 const { gql } = require('apollo-server');
 
 module.exports = {
-    typeDefs: gql`
+    typeDef: gql`
     type Account {
         balance:Int!
         owner:User!
@@ -9,10 +9,11 @@ module.exports = {
     }
 
     extend type Query{
-        accountBalance:Int!
+        bankBalance(owner:String!):Int!
     }
     
     extend type Mutation{
+        createAccount(balance:Int!, owner:String!):Account
         deposit(amount:Int!):Account
         spend(amount:Int!):Account        
     }
