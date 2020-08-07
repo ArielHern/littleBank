@@ -1,8 +1,8 @@
-const { gql } = require('apollo-server')
+const { gql } = require('apollo-server');
 
-const { typeDef: userTypeDef } = require('./user')
-const { typeDef: accountTypeDef } = require('./account')
-
+const { typeDef: userTypeDef } = require('./user');
+const { typeDef: accountTypeDef } = require('./account');
+const { typeDef: tokenTypeDef } = require('./token');
 
 const Query = gql`
   type Query {
@@ -26,6 +26,7 @@ module.exports = {
         Mutation,
         Subscription,
         userTypeDef,
-        accountTypeDef
+        accountTypeDef,
+        tokenTypeDef
     ]
 }

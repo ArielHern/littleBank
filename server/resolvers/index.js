@@ -1,12 +1,14 @@
 const { merge } = require('lodash')
 
-const { resolver: userResolvers } = require('./user')
-const { resolver: accountResolvers } = require('./account')
+const { resolvers: userResolvers } = require('./user');
+const { resolvers: accountResolvers } = require('./account');
+const { resolvers: tokenResolvers } = require('./token');
 
 
 const resolvers = merge(
     userResolvers,
-    accountResolvers
+    accountResolvers,
+    tokenResolvers
 )
 
 module.exports = {
