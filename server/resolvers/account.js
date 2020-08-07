@@ -27,7 +27,7 @@ module.exports = {
                 if (!currentUser) throw new AuthenticationError('you must be logged in')
 
                 //Look for existing account in the DB,
-                // if account send back a error message
+                // if there is an account send back a error message
                 const account = Account.findOne({ owner: currentUser });
                 if (account) throw new UserInputError('User already have an account')
 
@@ -42,9 +42,8 @@ module.exports = {
                 return account;
             },
 
-            deposit: async (_, args) => {
-                const owner = await User.findOne({ name: args.owner });
-                const account = await Account.findOne({ owner })
+            deposit: async (_, args, { currentUser }) => {
+                const account = await Account.findOne({ owner: currentUser });
                 account.balance = account.balance + args.amount;
                 await account.save()
                     .catch((error) => {
@@ -52,9 +51,8 @@ module.exports = {
                     });
                 return account;
             },
-            spend: async (_, args) => {
-                const owner = await User.findOne({ name: args.owner });
-                const account = await Account.findOne({ owner });
+            spend: async (_, args, { currentUser }) => {
+                const account = await Account.findOne({ owner: currentUser });
                 if (args.amount > account.balance) {
                     throw new UserInputError(
                         "decline: not enough funds in the account", {
