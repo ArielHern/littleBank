@@ -46,20 +46,24 @@ module.exports = {
             },
 
             deposit: async (_, args) => {
-                const account = Account.findOne({ _id: args._id })
-                account.balance = account.balance + args.balance;
+                const owner = await User.findOne({ name: args.owner });
+                const account = await Account.findOne({ owner })
+                account.balance = account.balance + args.amount;
                 await account.save()
                     .catch((error) => {
                         throw new UserInputError(error.message);
                     });
+                return account;
             },
             spend: async (_, args) => {
-                const account = Account.findOne({ _id: args._id })
-                account.balance = account.balance - args.balance;
+                const owner = await User.findOne({ name: args.owner });
+                const account = await Account.findOne({ owner });
+                account.balance = account.balance - args.amount;
                 await account.save()
                     .catch((error) => {
                         throw new UserInputError(error.message);
                     });
+                return account;
             }
         }
 

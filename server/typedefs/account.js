@@ -14,8 +14,8 @@ module.exports = {
     
     extend type Mutation{
         createAccount(balance:Int!, owner:String!):Account
-        deposit(amount:Int!):Account
-        spend(amount:Int!):Account        
+        deposit(amount:Int!, owner:String!):Account
+        spend(amount:Int!, owner:String!):Account        
     }
     `
 }
