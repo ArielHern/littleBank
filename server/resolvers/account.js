@@ -26,7 +26,12 @@ module.exports = {
                 //Must be log on to create account
                 if (!currentUser) throw new AuthenticationError('you must be logged in')
 
-                const account = new Account({ ...args, owner: currentUser });
+                //Look for existing account in the DB,
+                // if account send back a error message
+                const account = Account.findOne({ owner: currentUser });
+                if (account) throw new UserInputError('User already have an account')
+
+                account = new Account({ ...args, owner: currentUser });
                 try {
                     await account.save()
                 } catch (error) {
