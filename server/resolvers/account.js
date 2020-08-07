@@ -58,6 +58,13 @@ module.exports = {
             spend: async (_, args) => {
                 const owner = await User.findOne({ name: args.owner });
                 const account = await Account.findOne({ owner });
+                if (args.amount > account.balance) {
+                    throw new UserInputError(
+                        "decline: not enough funds in the account", {
+                        invalidArgs: args.amount
+                    }
+                    )
+                }
                 account.balance = account.balance - args.amount;
                 await account.save()
                     .catch((error) => {
