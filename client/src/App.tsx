@@ -6,13 +6,20 @@ import { formatDollarsToCents, formatCentsToDollars } from './utils';
 
 
 function App() {
-    const [token, setToken] = React.useState(null)
-    const [errorMessage, setErrorMessage] = React.useState('')
+    const [token, setToken] = React.useState<string>('');
+    const [errorMessage, setErrorMessage] = React.useState<string>('');
 
     const [amount, setAmount] = React.useState(0)
     const [type, setType] = React.useState('')
     const [balance, setBalance] = React.useState(15000)
     const [memo, setMemo] = React.useState('')
+
+
+    React.useEffect(() => {
+        const token = localStorage.getItem('littleBank-user-token')
+        if (token) setToken(token)
+    }, [])
+
 
     const options = [
         { key: 'd', text: 'Deposit', value: 'deposit' },
@@ -65,7 +72,6 @@ function App() {
                 <h2>Login</h2>
                 <LoginForm
                     setToken={setToken}
-                    setError={notify}
                 />
             </div>
         )
