@@ -1,4 +1,8 @@
 import React from 'react';
+import { useQuery } from '@apollo/client'
+
+import { BALANCE } from './graphql/queries';
+
 import { Container, Divider, TextArea, Form, Button } from 'semantic-ui-react';
 
 import LoginForm from './components/LoginForm';
@@ -8,6 +12,8 @@ import { formatDollarsToCents, formatCentsToDollars } from './utils';
 function App() {
     const [token, setToken] = React.useState<string>('');
     const [errorMessage, setErrorMessage] = React.useState<string>('');
+
+    const { loading, data, error } = useQuery(BALANCE)
 
     const [amount, setAmount] = React.useState(0)
     const [type, setType] = React.useState('')
@@ -53,8 +59,10 @@ function App() {
         bankTransaction(amount, type)
     }
 
-    const cashBalance = () => {
-        return formatCentsToDollars(balance);
+    const getBalance = () => {
+        if (loading) return 'loading balance...'
+
+        return `Balance: ${data.balance}`
     }
 
     const notify = (message: string) => {
@@ -79,7 +87,7 @@ function App() {
 
     return (
         <div>
-            <Container textAlign="left"><b>Balance:${cashBalance()}</b></Container>
+            <Container textAlign="left"><b>{getBalance()}</b></Container>
             <Container textAlign='left'>
                 <Form>
                     <Form.Group widths={8}>
