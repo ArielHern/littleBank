@@ -1,16 +1,15 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { useMutation } from '@apollo/client'
 import { LOGIN } from '../graphql/queries'
 
 interface props {
-    setError: string,
-    setToken: string
+    setToken: React.Dispatch<string>
 }
 
 
-const LoginForm: React.FC<props> = ({ setError, setToken }) => {
-    const [username, setUsername] = useState('')
-    const [password, setPassword] = useState('')
+const LoginForm: React.FC<props> = ({ setToken }) => {
+    const [username, setUsername] = React.useState('')
+    const [password, setPassword] = React.useState('')
 
     const [login, result] = useMutation(LOGIN, {
         onError: (error) => {
@@ -18,9 +17,18 @@ const LoginForm: React.FC<props> = ({ setError, setToken }) => {
         }
     })
 
-    const submit = async (event: { preventDefault: () => void }) => {
-        event.preventDefault()
+    React.useEffect(() => {
+        if (result.data) {
+            // set token and local storage from the result 
+            const token = result.data.login.value
+            localStorage.setItem('littleBank-user-token', token);
+            setToken(token)
 
+        }
+    }, [result.data])
+
+    const submit = async (e: React.FormEvent) => {
+        e.preventDefault()
         login({ variables: { username, password } })
     }
 
