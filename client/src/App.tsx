@@ -62,7 +62,7 @@ function App() {
     const getBalance = () => {
         if (loading) return 'loading balance...'
 
-        return `Balance: ${data.balance}`
+        return `Balance: $${data.balance}`
     }
 
     const notify = (message: string) => {
