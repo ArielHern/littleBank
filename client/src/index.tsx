@@ -6,9 +6,12 @@ import {
     ApolloClient,
     ApolloProvider,
     HttpLink,
-    InMemoryCache
+    InMemoryCache,
+    split
 } from '@apollo/client'
 import { setContext } from 'apollo-link-context'
+import { getMainDefinition } from '@apollo/client/utilities';
+import { WebSocketLink } from '@apollo/link-ws';
 
 import 'semantic-ui-css/semantic.min.css'
 
@@ -25,13 +28,35 @@ const authLink = setContext((_, { headers }) => {
     }
 });
 
+
+//  HTTP connection and WebSocket connection to the GraphQL server
 const httpLink = new HttpLink({
     uri: 'http://localhost:4000'
-})
+});
+const wsLink = new WebSocketLink({
+    uri: `ws://localhost:4000/graphql`,
+    options: {
+        reconnect: true
+    }
+});
+
+
+
+const splitLink = split(
+    ({ query }) => {
+        const definition = getMainDefinition(query)
+        return (
+            definition.kind === 'OperationDefinition' &&
+            definition.operation === 'subscription'
+        );
+    },
+    wsLink,
+    authLink.concat(httpLink as any) as any,  // Chain it with the HttpLink
+)
 
 
 const client = new ApolloClient({
-    link: authLink.concat(httpLink as any) as any,// Chain it with the HttpLink
+    link: splitLink,
     cache: new InMemoryCache()
 })
 
