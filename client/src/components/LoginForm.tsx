@@ -23,9 +23,8 @@ const LoginForm: React.FC<props> = ({ setToken }) => {
             const token = result.data.login.value
             localStorage.setItem('littleBank-user-token', token);
             setToken(token)
-
         }
-    }, [result.data])
+    }, [result.data, setToken])
 
     const submit = async (e: React.FormEvent) => {
         e.preventDefault()

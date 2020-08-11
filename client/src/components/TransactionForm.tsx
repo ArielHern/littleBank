@@ -2,17 +2,19 @@ import React from 'react';
 import { useMutation } from '@apollo/client'
 import { Container, Divider, TextArea, Form, Button } from 'semantic-ui-react';
 
-import { DEPOSIT } from '../graphql/queries';
-
-interface props {
-    options: any,
-}
+import { DEPOSIT, SPEND } from '../graphql/queries';
 
 
-const TransactionForm: React.FC<props> = ({ options }) => {
-    const [deposit, { data }] = useMutation(DEPOSIT)
+const TransactionForm: React.FC = () => {
+    const [deposit] = useMutation(DEPOSIT)
+    const [spend] = useMutation(SPEND)
     const [transactionType, setTransactionType] = React.useState('')
     const [amount, setAmount] = React.useState(0)
+
+    const options = [
+        { key: 'd', text: 'Deposit', value: 'deposit' },
+        { key: 's', text: 'Spend', value: 'spend' },
+    ]
 
 
 
@@ -30,10 +32,10 @@ const TransactionForm: React.FC<props> = ({ options }) => {
         e.preventDefault();
         switch (transactionType) {
             case 'deposit':
-                deposit({ variables: { amount } })
-                console.log('deposit complete', data);
-                setTransactionType('');
-                setAmount(0);
+                deposit({ variables: { amount } });
+                break;
+            case 'spend':
+                spend({ variables: { amount } });
                 break;
             default:
                 break;
