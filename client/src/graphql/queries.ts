@@ -22,3 +22,20 @@ mutation deposit($amount:Int!){
     }
 }
 `
+
+
+export const SPEND = gql`
+mutation spend($amount:Int!){
+    spend(amount:$amount){
+        balance
+    }
+}
+`
+
+export const BALANCE_CHANGED = gql`
+ subscription {
+    balanceChanged{
+        balance        
+    }
+}
+`
