@@ -3,20 +3,18 @@ import { useQuery } from '@apollo/client'
 
 import { BALANCE } from './graphql/queries';
 
-import { Container, Divider, TextArea, Form, Button } from 'semantic-ui-react';
+import { Container } from 'semantic-ui-react';
 
 import LoginForm from './components/LoginForm';
+import TransactionForm from './components/TransactionForm'
 import { formatDollarsToCents, formatCentsToDollars } from './utils';
 
 
 function App() {
     const [token, setToken] = React.useState<string>('');
     const [errorMessage, setErrorMessage] = React.useState<string>('');
-
     const { loading, data, error } = useQuery(BALANCE)
 
-    const [amount, setAmount] = React.useState(0)
-    const [type, setType] = React.useState('')
     const [balance, setBalance] = React.useState(15000)
     const [memo, setMemo] = React.useState('')
 
@@ -24,7 +22,7 @@ function App() {
     React.useEffect(() => {
         const token = localStorage.getItem('littleBank-user-token')
         if (token) setToken(token)
-    }, [])
+    }, [setToken])
 
 
     const options = [
@@ -47,16 +45,6 @@ function App() {
             default:
                 break;
         }
-    }
-
-    const handleDropdown = (e: any, data: any) => {
-        setType(data.value)
-    }
-    const handleMemo = (e: any, data: any) => {
-        setMemo(data.value)
-    }
-    const handleSubmit = () => {
-        bankTransaction(amount, type)
     }
 
     const getBalance = () => {
@@ -88,30 +76,9 @@ function App() {
     return (
         <div>
             <Container textAlign="left"><b>{getBalance()}</b></Container>
-            <Container textAlign='left'>
-                <Form>
-                    <Form.Group widths={8}>
-                        <Form.Input fluid label='Amount' placeholder='Amount' onChange={({ target }) => setAmount(parseFloat(target.value))} />
-                        <Form.Select
-                            fluid
-                            label='Type'
-                            options={options}
-                            placeholder='Type'
-                            onChange={handleDropdown}
-                        />
-                    </Form.Group>
-                    <TextArea
-                        style={{ width: "300px" }}
-                        rows={2}
-                        placeholder='Memo (optional)'
-                        onChange={handleMemo}
-                    />
-                </Form>
-                <Divider />
-                <Button type="submit" onClick={handleSubmit}>Submit</Button>
-            </Container>
-
-
+            <TransactionForm
+                options={options}
+            />
         </div>
     );
 
