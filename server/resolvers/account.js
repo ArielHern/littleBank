@@ -1,7 +1,8 @@
 const { UserInputError, AuthenticationError } = require('apollo-server');
+const { PubSub } = require('apollo-server')
+const pubsub = new PubSub()
 
 const Account = require('../model/account');
-const User = require('../model/user');
 
 
 module.exports = {
@@ -49,6 +50,8 @@ module.exports = {
                     .catch((error) => {
                         throw new UserInputError(error.message);
                     });
+                pubsub.publish('BALANCE_CHANGE', { balanceChanged: account });
+
                 return account;
             },
             spend: async (_, args, { currentUser }) => {
@@ -65,7 +68,15 @@ module.exports = {
                     .catch((error) => {
                         throw new UserInputError(error.message);
                     });
+
+                pubsub.publish('BALANCE_CHANGE', { balanceChanged: account });
+
                 return account;
+            }
+        },
+        Subscription: {
+            balanceChanged: {
+                subscribe: () => pubsub.asyncIterator(['BALANCE_CHANGE'])
             }
         }
 

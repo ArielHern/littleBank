@@ -17,5 +17,8 @@ module.exports = {
         deposit(amount:Int!):Account
         spend(amount:Int!):Account        
     }
+    extend  type Subscription{
+        balanceChanged:Account!
+    }
     `
 }
