@@ -8,3 +8,17 @@ mutation login($username:String!, $password:String!){
     }
 }
 `
+
+export const BALANCE = gql`
+query{
+    balance
+}
+`
+
+export const DEPOSIT = gql`
+mutation deposit($amount:Int!){
+    deposit(amount:$amount){
+        balance
+    }
+}
+`
