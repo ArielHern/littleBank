@@ -16,7 +16,7 @@ query{
 `
 
 export const DEPOSIT = gql`
-mutation deposit($amount:Int!){
+mutation deposit($amount:Float!){
     deposit(amount:$amount){
         balance
     }
@@ -25,7 +25,7 @@ mutation deposit($amount:Int!){
 
 
 export const SPEND = gql`
-mutation spend($amount:Int!){
+mutation spend($amount:Float!){
     spend(amount:$amount){
         balance
     }

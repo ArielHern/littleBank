@@ -16,8 +16,6 @@ const TransactionForm: React.FC = () => {
         { key: 's', text: 'Spend', value: 'spend' },
     ]
 
-
-
     const handleTransaction = (e: React.SyntheticEvent<HTMLElement, Event>, data: any): void => {
         e.preventDefault();
         setTransactionType(data.value);
@@ -48,7 +46,10 @@ const TransactionForm: React.FC = () => {
             <Divider />
             <Form>
                 <Form.Group widths={8}>
-                    <Form.Input fluid label='Amount' placeholder='Amount' onChange={({ target }) => setAmount(parseFloat(target.value))} />
+                    <Form.Input
+                        fluid label='Amount'
+                        placeholder='Amount'
+                        onChange={({ target }) => setAmount(parseFloat(target.value))} />
                     <Form.Select
                         fluid
                         label='Type'

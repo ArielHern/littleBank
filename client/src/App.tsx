@@ -4,15 +4,19 @@ import { Container } from 'semantic-ui-react';
 
 import LoginForm from './components/LoginForm';
 import TransactionForm from './components/TransactionForm';
+import LoadingPage from './components/LoadingPage';
+
 import { BALANCE, BALANCE_CHANGED } from './graphql/queries';
 
 
 function App() {
     const [token, setToken] = React.useState<string>('');
-    const { loading, error } = useQuery(BALANCE, {
-        onCompleted: (data) => setAccountBalance(data.balance)
-    })
     const [AccountBalance, setAccountBalance] = React.useState(0);
+
+    const { loading, data, error } = useQuery(BALANCE, {
+        onCompleted: (data) => setAccountBalance(data.balance),
+        onError: (error) => console.log(error.graphQLErrors[0].message)
+    });
 
     React.useEffect(() => {
         const token = localStorage.getItem('littleBank-user-token')
@@ -35,8 +39,10 @@ function App() {
             </div>
         )
     }
-    if (loading) {
-        return <h1>loading...</h1>
+    if (loading && !data) {
+        return (
+            <LoadingPage />
+        )
     }
 
     return (
@@ -48,7 +54,5 @@ function App() {
     );
 
 }
-
-
 
 export default App;
