@@ -14,6 +14,22 @@ query{
     balance
 }
 `
+export const TRANSACTIONS_HISTORY = gql`
+query {
+    me {
+      transactions {
+        date
+        amount
+        type
+        memo
+        id
+      }
+    }
+  }
+  
+
+`
+
 
 export const DEPOSIT = gql`
 mutation deposit($amount:Float!){
@@ -22,7 +38,6 @@ mutation deposit($amount:Float!){
     }
 }
 `
-
 
 export const SPEND = gql`
 mutation spend($amount:Float!){
@@ -39,3 +54,4 @@ export const BALANCE_CHANGED = gql`
     }
 }
 `
+
