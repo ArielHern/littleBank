@@ -1,8 +1,7 @@
 const { UserInputError } = require('apollo-server');
 
-
-const User = require('../model/user');
 const Transaction = require('../model/transaction');
+const User = require('../model/user');
 
 module.exports = {
     resolvers: {
@@ -11,15 +10,24 @@ module.exports = {
                 // Must be authenticated
                 if (!currentUser) throw new AuthenticationError('you must be logged in')
 
-                //Create new transaction
-                const transaction = new Transaction({ ...args, owner: currentUser });
+                // Get user from DB
+                const user = await User.findOne({ name: currentUser.name });
 
-                await transaction.save()
-                    .catch((error) => {
-                        throw new UserInputError(error.message, {
-                            invalidArgs: args
-                        });
+                // Create new transaction
+                const transaction = new Transaction({ ...args, owner: user });
+
+                // Add transaction to users record.
+                user.transactions.push(transaction)
+
+                try {
+                    await transaction.save()
+                    await user.save()
+                } catch (error) {
+                    throw new UserInputError(error.message, {
+                        invalidArgs: args
                     });
+                }
+
                 return transaction;
             }
         }
