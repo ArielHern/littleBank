@@ -1,5 +1,7 @@
 import React from 'react'
 import { Container, Table } from 'semantic-ui-react'
+import moment from 'moment';
+
 import { useQuery } from '@apollo/client';
 import { TRANSACTIONS_HISTORY } from '../graphql/queries';
 
@@ -14,6 +16,12 @@ interface ITransaction {
 const Transactions: React.FC = () => {
 
     const { loading, data, error } = useQuery(TRANSACTIONS_HISTORY);
+
+    const formatDateFrom = (date: Date) => {
+        return moment(date).format('MM-DD-YYYY');
+    }
+
+
 
 
     if (loading) return <h1>loading...</h1>
@@ -35,10 +43,14 @@ const Transactions: React.FC = () => {
                     return (
                         <Table.Body key={index}>
                             <Table.Row key={transaction.id}>
-                                <Table.Cell >{transaction.date}</Table.Cell>
+                                <Table.Cell >{formatDateFrom(transaction.date)}</Table.Cell>
                                 <Table.Cell>{transaction.amount}</Table.Cell>
                                 <Table.Cell>{transaction.type}</Table.Cell>
-                                <Table.Cell>{transaction.memo}</Table.Cell>
+                                {transaction.memo
+                                    ? <Table.Cell>{transaction.memo}</Table.Cell>
+                                    : <Table.Cell></Table.Cell>
+                                }
+
                             </Table.Row>
                         </Table.Body>
                     )
