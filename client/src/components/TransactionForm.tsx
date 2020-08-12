@@ -35,7 +35,7 @@ const TransactionForm: React.FC = () => {
                 deposit({ variables: { amount, memo } });
                 break;
             case 'spend':
-                spend({ variables: { amount } });
+                spend({ variables: { amount, memo } });
                 break;
             default:
                 break;

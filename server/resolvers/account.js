@@ -81,6 +81,14 @@ module.exports = {
                         throw new UserInputError(error.message);
                     });
 
+                // creating a new transaction and save it to DB
+                const transaction = new Transaction({ ...args, type: "spend", owner: currentUser });
+                try {
+                    await transaction.save()
+                } catch (error) {
+                    throw new UserInputError(error.message);
+                }
+
                 pubsub.publish('BALANCE_CHANGE', { balanceChanged: account });
 
                 return account;
