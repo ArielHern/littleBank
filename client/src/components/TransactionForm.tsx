@@ -9,6 +9,7 @@ const TransactionForm: React.FC = () => {
     const [deposit] = useMutation(DEPOSIT)
     const [spend] = useMutation(SPEND)
     const [transactionType, setTransactionType] = React.useState('')
+    const [memo, setMemo] = React.useState('')
     const [amount, setAmount] = React.useState(0)
 
     const options = [
@@ -21,8 +22,9 @@ const TransactionForm: React.FC = () => {
         setTransactionType(data.value);
     }
 
-    const handleMemo = (e: React.FormEvent<HTMLTextAreaElement>): void | undefined => {
-        //setMemo(e.target.value);
+    const handleMemo = (e: React.FormEvent<HTMLTextAreaElement>, data: any): void | undefined => {
+        e.preventDefault();
+        setMemo(data.value);
 
     }
 
@@ -30,7 +32,7 @@ const TransactionForm: React.FC = () => {
         e.preventDefault();
         switch (transactionType) {
             case 'deposit':
-                deposit({ variables: { amount } });
+                deposit({ variables: { amount, memo } });
                 break;
             case 'spend':
                 spend({ variables: { amount } });
