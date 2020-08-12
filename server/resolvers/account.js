@@ -28,7 +28,7 @@ module.exports = {
 
                 //Look for existing account in the DB,
                 // if there is an account send back a error message
-                const account = Account.findOne({ owner: currentUser });
+                let account = await Account.findOne({ owner: currentUser });
                 if (account) throw new UserInputError('User already have an account')
 
                 account = new Account({ ...args, owner: currentUser });
