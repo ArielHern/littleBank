@@ -5,8 +5,10 @@ import { Container } from 'semantic-ui-react';
 import LoginForm from './components/LoginForm';
 import TransactionForm from './components/TransactionForm';
 import LoadingPage from './components/LoadingPage';
+import Transaction from './components/Transactions';
 
 import { BALANCE, BALANCE_CHANGED } from './graphql/queries';
+import Transactions from './components/Transactions';
 
 
 function App() {
@@ -49,6 +51,7 @@ function App() {
         <div style={{ marginTop: "10px" }}>
             <Container textAlign="left"><h1>{`Balance: $${AccountBalance}`}</h1></Container>
             <TransactionForm />
+            <Transactions />
         </div>
 
     );
