@@ -10,6 +10,7 @@ module.exports = {
         type:String!
         memo:String
         owner:User!
+        id:ID!
     }
     
     extend type Mutation{
