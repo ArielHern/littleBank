@@ -17,7 +17,13 @@ const schema = new mongoose.Schema({
     account: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Account'
-    }
+    },
+    transactions: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Transaction'
+        }
+    ]
 });
 
 module.exports = mongoose.model('User', schema);
