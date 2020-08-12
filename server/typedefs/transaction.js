@@ -6,20 +6,19 @@ module.exports = {
 
     type Transaction {
         date: Date
-        amount:Float!
-        type:String!
-        memo:String
-        owner:User!
-        id:ID!
-    }
-    
-    extend type Mutation{
-        createTrasaction(
-            amount:Float!
-            type:String!
-            memo:String
-        ):Transaction
-
-    }
+        amount: Float!
+        type: String!
+        memo: String
+        owner: User!
+        id: ID!
+      }
+      
+      extend type Mutation {
+        createTrasaction(amount: Float!, type: String!, memo: String): Transaction
+      }
+      
+      extend type Subscription {
+        transactionChanged: Transaction!
+      }      
     `
 }

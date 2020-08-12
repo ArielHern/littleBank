@@ -63,6 +63,7 @@ module.exports = {
                 }
 
                 pubsub.publish('BALANCE_CHANGE', { balanceChanged: account });
+                pubsub.publish('TRANSACTION_CHANGED', { transactionChanged: transaction });
 
                 return account;
             },
@@ -90,6 +91,7 @@ module.exports = {
                 }
 
                 pubsub.publish('BALANCE_CHANGE', { balanceChanged: account });
+                pubsub.publish('TRANSACTION_CHANGED', { transactionChanged: transaction });
 
                 return account;
             }
@@ -97,6 +99,9 @@ module.exports = {
         Subscription: {
             balanceChanged: {
                 subscribe: () => pubsub.asyncIterator(['BALANCE_CHANGE'])
+            },
+            transactionChanged: {
+                subscribe: () => pubsub.asyncIterator(['TRANSACTION_CHANGED'])
             }
         }
 

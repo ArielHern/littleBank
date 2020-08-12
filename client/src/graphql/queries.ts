@@ -52,3 +52,14 @@ export const BALANCE_CHANGED = gql`
 }
 `
 
+export const TRANSACTION_CHANGED = gql`
+ subscription {
+    transactionChanged{
+        date
+        amount
+        type
+        memo
+        id
+    }
+}
+`
