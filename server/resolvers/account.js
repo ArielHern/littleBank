@@ -4,7 +4,6 @@ const pubsub = new PubSub()
 
 const Account = require('../model/account');
 
-
 module.exports = {
     resolvers: {
         Query: {
