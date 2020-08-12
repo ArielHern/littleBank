@@ -3,6 +3,7 @@ const { PubSub } = require('apollo-server')
 const pubsub = new PubSub()
 
 const Account = require('../model/account');
+const Transaction = require('../model/transaction');
 
 module.exports = {
     resolvers: {
@@ -43,12 +44,24 @@ module.exports = {
             },
 
             deposit: async (_, args, { currentUser }) => {
+                //Find account and update balance
                 const account = await Account.findOne({ owner: currentUser });
                 account.balance = account.balance + args.amount;
+
+                //Save updated account
                 await account.save()
                     .catch((error) => {
                         throw new UserInputError(error.message);
                     });
+
+                // creating a new transaction and save it to DB
+                const transaction = new Transaction({ ...args, type: "deposit", owner: currentUser });
+                try {
+                    await transaction.save()
+                } catch (error) {
+                    throw new UserInputError(error.message);
+                }
+
                 pubsub.publish('BALANCE_CHANGE', { balanceChanged: account });
 
                 return account;

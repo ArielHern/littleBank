@@ -14,7 +14,7 @@ module.exports = {
     
     extend type Mutation{
         createAccount(balance:Int!):Account
-        deposit(amount:Float!):Account
+        deposit(amount:Float!, memo:String):Account
         spend(amount:Float!):Account        
     }
     extend  type Subscription{

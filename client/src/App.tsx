@@ -5,17 +5,17 @@ import { Container } from 'semantic-ui-react';
 import LoginForm from './components/LoginForm';
 import TransactionForm from './components/TransactionForm';
 import LoadingPage from './components/LoadingPage';
-import Transaction from './components/Transactions';
+import Transactions from './components/Transactions';
 
 import { BALANCE, BALANCE_CHANGED } from './graphql/queries';
-import Transactions from './components/Transactions';
+
 
 
 function App() {
     const [token, setToken] = React.useState<string>('');
     const [AccountBalance, setAccountBalance] = React.useState(0);
 
-    const { loading, data, error } = useQuery(BALANCE, {
+    const { loading, data } = useQuery(BALANCE, {
         onCompleted: (data) => setAccountBalance(data.balance),
         onError: (error) => console.log(error.graphQLErrors[0].message)
     });

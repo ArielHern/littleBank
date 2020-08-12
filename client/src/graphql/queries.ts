@@ -32,8 +32,8 @@ query {
 
 
 export const DEPOSIT = gql`
-mutation deposit($amount:Float!){
-    deposit(amount:$amount){
+mutation deposit($amount:Float!, $memo:String){
+    deposit(amount:$amount, memo:$memo){
         balance
     }
 }
