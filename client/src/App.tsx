@@ -1,14 +1,11 @@
-import React from 'react';
 import { useQuery, useSubscription } from '@apollo/client';
+import React from 'react';
 import { Container } from 'semantic-ui-react';
-
+import LoadingPage from './components/LoadingPage';
 import LoginForm from './components/LoginForm';
 import TransactionForm from './components/TransactionForm';
-import LoadingPage from './components/LoadingPage';
 import Transactions from './components/Transactions';
-
 import { BALANCE, BALANCE_CHANGED } from './graphql/queries';
-
 
 
 function App() {
@@ -16,7 +13,7 @@ function App() {
     const [AccountBalance, setAccountBalance] = React.useState(0);
 
     const { loading, data } = useQuery(BALANCE, {
-        onCompleted: (data) => setAccountBalance(data.balance),
+        onCompleted: (data) => setAccountBalance(data.balance.toFixed(2)),
         onError: (error) => console.log(error.graphQLErrors[0].message)
     });
 
@@ -27,7 +24,7 @@ function App() {
 
     useSubscription(BALANCE_CHANGED, {
         onSubscriptionData: ({ subscriptionData }) => {
-            setAccountBalance(subscriptionData.data.balanceChanged.balance)
+            setAccountBalance(subscriptionData.data.balanceChanged.balance.toFixed(2))
         }
     })
 
