@@ -5,7 +5,7 @@ import moment from 'moment';
 import { useQuery, useSubscription, useApolloClient } from '@apollo/client';
 import { TRANSACTIONS_HISTORY, TRANSACTION_CHANGED } from '../graphql/queries';
 
-interface ITransaction {
+interface Transaction {
     date: Date,
     amount: number,
     type: string,
@@ -13,14 +13,18 @@ interface ITransaction {
     id: string,
 }
 
+interface TransactionData {
+    transactions: Transaction[]
+}
+
 const Transactions: React.FC = () => {
 
-    const { loading, data, error } = useQuery(TRANSACTIONS_HISTORY);
+    const { data, loading, error } = useQuery<TransactionData>(TRANSACTIONS_HISTORY);
 
     //Update cached
     const client = useApolloClient()
-    const updateCacheWith = (addedTransaction: ITransaction) => {
-        const includedIn = (set: ITransaction[], object: ITransaction) =>
+    const updateCacheWith = (addedTransaction: Transaction) => {
+        const includedIn = (set: Transaction[], object: Transaction) =>
             set.map((b) => b.id).includes(object.id)
 
         const dataInStore = client.readQuery({ query: TRANSACTIONS_HISTORY })
@@ -49,8 +53,6 @@ const Transactions: React.FC = () => {
     return (
 
         <Container>
-            <br />
-            <h3>Transactions history</h3>
             <Table celled>
                 <Table.Header>
                     <Table.Row>
@@ -60,7 +62,7 @@ const Transactions: React.FC = () => {
                         <Table.HeaderCell>Description</Table.HeaderCell>
                     </Table.Row>
                 </Table.Header>
-                {data.transactions.map((transaction: ITransaction, index: any) => {
+                {data?.transactions.map((transaction: Transaction, index: any) => {
                     return (
                         <Table.Body key={index}>
                             <Table.Row key={transaction.id}>
