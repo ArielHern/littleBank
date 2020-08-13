@@ -12,6 +12,10 @@ module.exports = {
         owner: User!
         id: ID!
       }
+
+    extend type Query {
+        transactions:[Transaction!]!   
+    }
       
       extend type Mutation {
         createTrasaction(amount: Float!, type: String!, memo: String): Transaction

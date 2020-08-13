@@ -13,7 +13,7 @@ module.exports = {
         },
         User: {
             transactions: async (_, args, { currentUser }) => {
-                return await Transaction.find({ owner: currentUser });;
+                return await Transaction.find({ owner: currentUser });
             }
         },
         Mutation: {

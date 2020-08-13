@@ -5,6 +5,11 @@ const User = require('../model/user');
 
 module.exports = {
     resolvers: {
+        Query: {
+            transactions: async (_, args, { currentUser }) => {
+                return await Transaction.find({ owner: currentUser });
+            }
+        },
         Mutation: {
             createTrasaction: async (_, args, { currentUser }) => {
                 // Must be authenticated

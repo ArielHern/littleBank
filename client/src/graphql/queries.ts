@@ -16,16 +16,15 @@ query{
 `
 export const TRANSACTIONS_HISTORY = gql`
 query {
-    me {
-      transactions {
-        date
-        amount
-        type
-        memo
-        id
-      }
+    transactions {
+      date
+      amount
+      type
+      memo
+      id
     }
   }
+  
 `
 
 export const DEPOSIT = gql`
