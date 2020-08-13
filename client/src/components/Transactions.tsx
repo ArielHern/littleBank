@@ -21,13 +21,13 @@ const Transactions: React.FC = () => {
     const client = useApolloClient()
     const updateCacheWith = (addedTransaction: ITransaction) => {
         const includedIn = (set: ITransaction[], object: ITransaction) =>
-            set.map((b: { id: string; }) => b.id).includes(object.id)
+            set.map((b) => b.id).includes(object.id)
 
         const dataInStore = client.readQuery({ query: TRANSACTIONS_HISTORY })
-        if (!includedIn(dataInStore.me.transactions, addedTransaction)) {
+        if (!includedIn(dataInStore.transactions, addedTransaction)) {
             client.writeQuery({
                 query: TRANSACTIONS_HISTORY,
-                data: { me: dataInStore.me.transactions.concat(addedTransaction) }
+                data: { transactions: dataInStore.transactions.concat(addedTransaction) }
             })
         }
     }
@@ -60,7 +60,7 @@ const Transactions: React.FC = () => {
                         <Table.HeaderCell>Description</Table.HeaderCell>
                     </Table.Row>
                 </Table.Header>
-                {data.me.transactions.map((transaction: ITransaction, index: any) => {
+                {data.transactions.map((transaction: ITransaction, index: any) => {
                     return (
                         <Table.Body key={index}>
                             <Table.Row key={transaction.id}>
