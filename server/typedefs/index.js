@@ -3,7 +3,7 @@ const { gql } = require('apollo-server');
 const { typeDef: userTypeDef } = require('./user');
 const { typeDef: accountTypeDef } = require('./account');
 const { typeDef: tokenTypeDef } = require('./token');
-const { typeDef: transactionTypeDef } = require('./transaction');
+const { typeDef: transactionTypeDef } = require('./transactioncopy');
 
 const Query = gql`
   type Query {

@@ -15,16 +15,21 @@ query{
 }
 `
 export const TRANSACTIONS_HISTORY = gql`
-query {
-    transactions {
-      date
-      amount
-      type
-      memo
-      id
+query($cursor: String) {
+    transactions(cursor: $cursor){
+        edges {
+            createdAt
+            amount
+            type
+            memo
+            id
+        }
+        pageInfo{
+            endCursor
+            hasNextPage
+        }
     }
-  }
-  
+  }  
 `
 
 export const DEPOSIT = gql`
@@ -54,7 +59,7 @@ export const BALANCE_CHANGED = gql`
 export const TRANSACTION_CHANGED = gql`
  subscription {
     transactionChanged{
-        date
+        createdAt
         amount
         type
         memo

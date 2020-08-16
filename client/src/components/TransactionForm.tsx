@@ -1,9 +1,17 @@
+import { useMutation } from '@apollo/client';
 import React from 'react';
-import { useMutation } from '@apollo/client'
-import { Container, Divider, TextArea, Form, Button } from 'semantic-ui-react';
-
+import { Button, Container, Divider, Form, FormProps, TextArea } from 'semantic-ui-react';
 import { DEPOSIT, SPEND } from '../graphql/queries';
 
+//interface ITrasaction extends DropdownProps{
+//    value: React.SetStateAction<string>
+//}
+
+interface Transaction {
+    amount: number;
+    transactionType: string;
+    memo: string
+}
 
 const TransactionForm: React.FC = () => {
     const [deposit] = useMutation(DEPOSIT)
@@ -12,14 +20,17 @@ const TransactionForm: React.FC = () => {
     const [memo, setMemo] = React.useState('')
     const [amount, setAmount] = React.useState(0)
 
+
     const options = [
         { key: 'd', text: 'Deposit', value: 'deposit' },
         { key: 's', text: 'Spend', value: 'spend' },
     ]
 
-    const handleTransaction = (e: React.SyntheticEvent<HTMLElement, Event>, data: any): void => {
+
+    const handleTransaction = (e: React.SyntheticEvent<HTMLElement>, data: any): void => {
         e.preventDefault();
         setTransactionType(data.value);
+
     }
 
     const handleMemo = (e: React.FormEvent<HTMLTextAreaElement>, data: any): void | undefined => {
@@ -42,6 +53,10 @@ const TransactionForm: React.FC = () => {
         }
     }
 
+    const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>, form: FormProps) => {
+        console.log(e);
+
+    }
 
     return (
         <Container textAlign='left'>
@@ -68,7 +83,7 @@ const TransactionForm: React.FC = () => {
                 />
             </Form>
             <Divider />
-            <Button type="submit" onClick={handleSubmit}>Submit</Button>
+            <Button type="submit" color="green" onClick={handleSubmit}>Submit</Button>
         </Container>
     )
 }

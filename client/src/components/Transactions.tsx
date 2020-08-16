@@ -1,12 +1,12 @@
 import React from 'react'
-import { Container, Table } from 'semantic-ui-react'
+import { Container, Table, Button } from 'semantic-ui-react'
 import moment from 'moment';
 
 import { useQuery, useSubscription, useApolloClient } from '@apollo/client';
 import { TRANSACTIONS_HISTORY, TRANSACTION_CHANGED } from '../graphql/queries';
 
 interface Transaction {
-    date: Date,
+    createdAt: Date,
     amount: number,
     type: string,
     memo: string
@@ -14,12 +14,15 @@ interface Transaction {
 }
 
 interface TransactionData {
-    transactions: Transaction[]
+    transactions: Transaction[],
+    edges: Transaction[]
+
 }
 
 const Transactions: React.FC = () => {
-
-    const { data, loading, error } = useQuery<TransactionData>(TRANSACTIONS_HISTORY);
+    const { loading, error, data, fetchMore } = useQuery(TRANSACTIONS_HISTORY, {
+        variables: { cursor: null }
+    });
 
     //Update cached
     const client = useApolloClient()
@@ -44,14 +47,21 @@ const Transactions: React.FC = () => {
         }
     })
 
-
     const formatDateFrom = (date: Date) => {
         return moment(date).format('MM-DD-YYYY');
     }
+    if (!data) return <h2>No transactions</h2>
+
+    //extract transactions from data
+    const { transactions } = data
 
     if (loading) return <h1>loading...</h1>
-    return (
 
+    //extract edges, pageInfo from transactions
+    const { edges, pageInfo } = transactions
+
+
+    return (
         <Container>
             <Table celled>
                 <Table.Header>
@@ -62,11 +72,11 @@ const Transactions: React.FC = () => {
                         <Table.HeaderCell>Description</Table.HeaderCell>
                     </Table.Row>
                 </Table.Header>
-                {data?.transactions.map((transaction: Transaction, index: any) => {
+                {edges.map((transaction: Transaction, index: any) => {
                     return (
                         <Table.Body key={index}>
                             <Table.Row key={transaction.id}>
-                                <Table.Cell >{formatDateFrom(transaction.date)}</Table.Cell>
+                                <Table.Cell >{formatDateFrom(transaction.createdAt)}</Table.Cell>
                                 <Table.Cell>{transaction.amount}</Table.Cell>
                                 <Table.Cell>{transaction.type}</Table.Cell>
                                 {transaction.memo
@@ -79,6 +89,19 @@ const Transactions: React.FC = () => {
                     )
                 })}
             </Table>
+            <Button onClick={() => {
+                const { endCursor } = pageInfo
+
+                fetchMore({
+                    variables: { cursor: endCursor },
+                    updateQuery: (preResult, { fetchMoreResult }) => {
+                        fetchMoreResult.transactions.edges = [
+                            ...preResult.transactions.edges,
+                            ...fetchMoreResult.transactions.edges
+                        ]
+                    }
+                })
+            }}>More</Button>
         </Container>
 
     )

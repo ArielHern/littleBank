@@ -29,7 +29,7 @@ const authLink = setContext((_, { headers }) => {
 });
 
 
-//  HTTP connection and WebSocket connection to the GraphQL server
+//  HTTP and WebSocket connections to the GraphQL server
 const httpLink = new HttpLink({
     uri: 'http://localhost:4000'
 });

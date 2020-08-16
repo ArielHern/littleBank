@@ -3,7 +3,7 @@ const { merge } = require('lodash')
 const { resolvers: userResolvers } = require('./user');
 const { resolvers: accountResolvers } = require('./account');
 const { resolvers: tokenResolvers } = require('./token');
-const { resolvers: transactionResolvers } = require('./transaction');
+const { resolvers: transactionResolvers } = require('./transactioncopy');
 
 
 const resolvers = merge(
