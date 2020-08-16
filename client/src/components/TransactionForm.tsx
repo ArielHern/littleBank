@@ -1,11 +1,7 @@
 import { useMutation } from '@apollo/client';
 import React from 'react';
-import { Button, Container, Divider, Form, FormProps, TextArea } from 'semantic-ui-react';
+import { Button, Container, Divider, Form, FormProps, TextArea, DropdownProps } from 'semantic-ui-react';
 import { DEPOSIT, SPEND } from '../graphql/queries';
-
-//interface ITrasaction extends DropdownProps{
-//    value: React.SetStateAction<string>
-//}
 
 interface Transaction {
     amount: number;

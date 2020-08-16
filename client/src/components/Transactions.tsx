@@ -5,6 +5,12 @@ import moment from 'moment';
 import { useQuery, useSubscription, useApolloClient } from '@apollo/client';
 import { TRANSACTIONS_HISTORY, TRANSACTION_CHANGED } from '../graphql/queries';
 
+
+interface PageInfo {
+    hasNextPage: Boolean
+    endCursor: String
+}
+
 interface Transaction {
     createdAt: Date,
     amount: number,
@@ -14,15 +20,12 @@ interface Transaction {
 }
 
 interface TransactionData {
-    transactions: Transaction[],
-    edges: Transaction[]
-
+    edges: Transaction[],
+    pageInfo: PageInfo
 }
 
 const Transactions: React.FC = () => {
-    const { loading, error, data, fetchMore } = useQuery(TRANSACTIONS_HISTORY, {
-        variables: { cursor: null }
-    });
+    const { loading, error, data, fetchMore } = useQuery(TRANSACTIONS_HISTORY);
 
     //Update cached
     const client = useApolloClient()
@@ -57,7 +60,6 @@ const Transactions: React.FC = () => {
 
     if (loading) return <h1>loading...</h1>
 
-    //extract edges, pageInfo from transactions
     const { edges, pageInfo } = transactions
 
 
@@ -95,10 +97,12 @@ const Transactions: React.FC = () => {
                 fetchMore({
                     variables: { cursor: endCursor },
                     updateQuery: (preResult, { fetchMoreResult }) => {
+                        //console.log(fetchMoreResult.transactions.edges);
                         fetchMoreResult.transactions.edges = [
                             ...preResult.transactions.edges,
                             ...fetchMoreResult.transactions.edges
                         ]
+                        return fetchMoreResult;
                     }
                 })
             }}>More</Button>
