@@ -3,7 +3,7 @@ import { Container, Table, Button } from 'semantic-ui-react'
 import moment from 'moment';
 
 import { useQuery, useSubscription, useApolloClient } from '@apollo/client';
-import { TRANSACTIONS_HISTORY, TRANSACTION_CHANGED } from '../graphql/queries';
+import { TRANSACTIONS_HISTORY, TRANSACTION_CHANGED } from '../../graphql/queries';
 
 
 interface PageInfo {
@@ -45,8 +45,8 @@ const Transactions: React.FC = () => {
     useSubscription(TRANSACTION_CHANGED, {
         onSubscriptionData: ({ subscriptionData }) => {
             const addedTransaction = subscriptionData.data.transactionChanged
-            updateCacheWith(addedTransaction)
-
+            console.log(addedTransaction);
+            //updateCacheWith(addedTransaction)
         }
     })
 
@@ -91,19 +91,19 @@ const Transactions: React.FC = () => {
                     )
                 })}
             </Table>
-            <Button onClick={() => {
+            <Button disabled={!pageInfo.hasNextPage} onClick={() => {
                 const { endCursor } = pageInfo
 
                 fetchMore({
-                    variables: { cursor: endCursor },
-                    updateQuery: (preResult, { fetchMoreResult }) => {
-                        //console.log(fetchMoreResult.transactions.edges);
-                        fetchMoreResult.transactions.edges = [
-                            ...preResult.transactions.edges,
-                            ...fetchMoreResult.transactions.edges
-                        ]
-                        return fetchMoreResult;
-                    }
+                    variables: { cursor: endCursor }
+                    //updateQuery: (preResult, { fetchMoreResult }) => {
+                    //    fetchMoreResult.transactions.edges = [
+                    //        ...preResult.transactions.edges,
+                    //        ...fetchMoreResult.transactions.edges
+                    //    ]
+                    //    return fetchMoreResult;
+
+                    //}
                 })
             }}>More</Button>
         </Container>

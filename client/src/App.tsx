@@ -3,8 +3,8 @@ import React from 'react';
 import { Container, Button } from 'semantic-ui-react';
 import LoadingPage from './components/LoadingPage';
 import LoginForm from './components/LoginForm';
-import TransactionForm from './components/TransactionForm';
-import Transactions from './components/Transactions';
+import TransactionForm from './components/transaction/TransactionForm';
+import Transactions from './components/transaction/Transactions';
 import { BALANCE, BALANCE_CHANGED } from './graphql/queries';
 
 
@@ -38,8 +38,7 @@ function App() {
 
     if (!token) {
         return (
-            <div>
-                <h2>Login</h2>
+            <div style={{ width: "50%", margin: "60px auto" }}>
                 <LoginForm
                     setToken={setToken}
                 />

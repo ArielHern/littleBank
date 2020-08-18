@@ -1,7 +1,7 @@
 import { useMutation } from '@apollo/client';
 import React from 'react';
 import { Button, Container, Divider, Form, FormProps, TextArea, DropdownProps } from 'semantic-ui-react';
-import { DEPOSIT, SPEND } from '../graphql/queries';
+import { DEPOSIT, SPEND } from '../../graphql/queries';
 
 interface Transaction {
     amount: number;
@@ -49,15 +49,18 @@ const TransactionForm: React.FC = () => {
         }
     }
 
-    const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>, form: FormProps) => {
-        console.log(e);
+    const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>, data: FormProps) => {
+        e.preventDefault()
+        setMemo('');
+        setTransactionType('');
+        setAmount(0);
 
     }
 
     return (
         <Container textAlign='left'>
             <Divider />
-            <Form>
+            <Form onSubmit={handleFormSubmit}>
                 <Form.Group widths={8}>
                     <Form.Input
                         fluid label='Amount'

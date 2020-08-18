@@ -1,10 +1,6 @@
 const mongoose = require('mongoose');
 
 const schema = new mongoose.Schema({
-    date: {
-        type: Date,
-        default: Date.now
-    },
     amount: {
         type: Number,
         required: true
@@ -18,6 +14,10 @@ const schema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
     }
-})
+},
+    {
+        timestamps: true
+    }
+)
 
-module.exports = mongoose.model('Transaction', schema);
+module.exports = mongoose.model('TransactionCopy', schema);

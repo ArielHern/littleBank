@@ -1,6 +1,7 @@
 import React from 'react'
 import { useMutation } from '@apollo/client'
 import { LOGIN } from '../graphql/queries'
+import { Segment, Grid, Form, Button, Divider } from 'semantic-ui-react'
 
 interface props {
     setToken: React.Dispatch<string>
@@ -32,24 +33,52 @@ const LoginForm: React.FC<props> = ({ setToken }) => {
     }
 
     return (
-        <div>
-            <form onSubmit={submit}>
-                <div>
-                    username <input
-                        value={username}
-                        onChange={({ target }) => setUsername(target.value)}
-                    />
-                </div>
-                <div>
-                    password <input
-                        type='password'
-                        value={password}
-                        onChange={({ target }) => setPassword(target.value)}
-                    />
-                </div>
-                <button type='submit'>login</button>
-            </form>
-        </div>
+        //<div>
+        //    <form onSubmit={submit}>
+        //        <div>
+        //            username <input
+        //                value={username}
+        //                onChange={({ target }) => setUsername(target.value)}
+        //            />
+        //        </div>
+        //        <div>
+        //            password <input
+        //                type='password'
+        //                value={password}
+        //                onChange={({ target }) => setPassword(target.value)}
+        //            />
+        //        </div>
+        //        <button type='submit'>login</button>
+        //    </form>
+        //</div>
+        <Segment placeholder>
+            <Grid columns={2} relaxed='very' stackable>
+                <Grid.Column>
+                    <Form onSubmit={submit}>
+                        <Form.Input
+                            icon='user'
+                            iconPosition='left'
+                            label='Username'
+                            onChange={({ target }) => setUsername(target.value)}
+                        />
+                        <Form.Input
+                            icon='lock'
+                            iconPosition='left'
+                            label='Password'
+                            type='password'
+                            onChange={({ target }) => setPassword(target.value)}
+                        />
+
+                        <Button content='Login' primary />
+                    </Form>
+                </Grid.Column>
+
+                <Grid.Column verticalAlign='middle'>
+                    <Button content='Sign up' icon='signup' size='big' />
+                </Grid.Column>
+            </Grid>
+            <Divider vertical>Or</Divider>
+        </Segment>
     )
 }
 
