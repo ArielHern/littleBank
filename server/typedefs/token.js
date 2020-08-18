@@ -7,6 +7,8 @@ module.exports = {
     }
     extend type Mutation{
         login(username:String!, password:String!):Token
+
+        signUp(username:String!, password:String!, name:String!):Token
     }
 
     `

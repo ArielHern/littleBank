@@ -33,24 +33,6 @@ const LoginForm: React.FC<props> = ({ setToken }) => {
     }
 
     return (
-        //<div>
-        //    <form onSubmit={submit}>
-        //        <div>
-        //            username <input
-        //                value={username}
-        //                onChange={({ target }) => setUsername(target.value)}
-        //            />
-        //        </div>
-        //        <div>
-        //            password <input
-        //                type='password'
-        //                value={password}
-        //                onChange={({ target }) => setPassword(target.value)}
-        //            />
-        //        </div>
-        //        <button type='submit'>login</button>
-        //    </form>
-        //</div>
         <Segment placeholder>
             <Grid columns={2} relaxed='very' stackable>
                 <Grid.Column>

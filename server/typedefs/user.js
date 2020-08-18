@@ -13,9 +13,5 @@ module.exports = {
     extend type Query{
         me:User
     }
-    
-    extend type Mutation {
-        createUser(username:String!, password:String!, name:String!):User
-    }
     `
 }
