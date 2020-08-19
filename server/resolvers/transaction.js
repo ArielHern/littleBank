@@ -1,4 +1,4 @@
-const { UserInputError } = require('apollo-server');
+const { UserInputError, AuthenticationError } = require('apollo-server');
 
 const Transaction = require('../model/transaction');
 const Account = require('../model/account');
@@ -13,18 +13,21 @@ const toCursorHash = string => Buffer.from(string).toString('base64');
 module.exports = {
     resolvers: {
         Query: {
-            transactions: async (_, { cursor, limit = 5 }, { currentUser }) => {
+            transactions: async (_, { name, cursor, limit = 5 }, { currentUser }) => {
                 // Must be authenticated
                 if (!currentUser) throw new AuthenticationError('you must be logged in')
 
+                //find account in DB
+
+                const account = await Account.findOne({ name: name, owner: currentUser });
                 const cursorOptions = cursor
                     ? {
                         createdAt: {
                             $lt: fromCursorHash(cursor),
                         },
-                        owner: currentUser
+                        forAccount: account
                     }
-                    : { owner: currentUser };
+                    : { forAccount: account };
 
                 const transactions = await Transaction.find(
                     cursorOptions,
@@ -59,7 +62,7 @@ module.exports = {
                 // Create new transaction
                 const transaction = new Transaction({ ...args, forAccount: account });
 
-                // Add transaction to users record.
+                // Add transaction to account record.
                 account.transactions.push(transaction)
 
                 try {

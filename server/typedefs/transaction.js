@@ -24,7 +24,7 @@ module.exports = {
     }
 
     extend type Query {
-        transactions(cursor: String, limit: Int): TransactionConnection!
+        transactions(cursor: String, limit: Int, name:String!): TransactionConnection!
     }
       
       extend type Mutation {
