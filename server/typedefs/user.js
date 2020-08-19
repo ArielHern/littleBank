@@ -5,8 +5,8 @@ module.exports = {
     type User {
         username:String!
         name:String!
-        transactions:[Transaction!]!   
-        passwordHash:String!    
+        passwordHash:String! 
+        accounts:[Account!]!   
         id:ID!
     }
 

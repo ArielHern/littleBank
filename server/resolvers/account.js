@@ -28,9 +28,12 @@ module.exports = {
                 if (!currentUser) throw new AuthenticationError('you must be logged in')
 
                 //Look for existing account in the DB,
-                // if there is an account send back a error message
-                let account = await Account.findOne({ owner: currentUser });
-                if (account) throw new UserInputError('User already have an account')
+                // if there is an account with the same name send back a error message
+                let account = await Account.findOne({ name: args.name });
+
+                if (account) {
+                    if (account.owner === currentUser) throw new UserInputError('You already have account with same name');
+                };
 
                 account = new Account({ ...args, owner: currentUser });
                 try {
@@ -44,20 +47,23 @@ module.exports = {
             },
 
             deposit: async (_, args, { currentUser }) => {
-                //Find account and update balance
-                const account = await Account.findOne({ owner: currentUser });
+                if (!currentUser) throw new AuthenticationError('you must be logged in')
+
+                //Find account and check for the owner
+                const account = await Account.findOne({ name: args.name });
+                if (account) {
+                    if (!account.owner === currentUser) throw new UserInputError('account not found.');
+                }
+                //Update balance
                 account.balance = account.balance + args.amount;
 
-                //Save updated account
-                await account.save()
-                    .catch((error) => {
-                        throw new UserInputError(error.message);
-                    });
-
                 // creating a new transaction and save it to DB
-                const transaction = new Transaction({ ...args, type: "deposit", owner: currentUser });
+                const transaction = new Transaction({ ...args, type: "deposit", forAccount: account });
+                account.transactions.push(transaction);
+
                 try {
                     await transaction.save()
+                    await account.save()
                 } catch (error) {
                     throw new UserInputError(error.message);
                 }
@@ -68,24 +74,30 @@ module.exports = {
                 return account;
             },
             spend: async (_, args, { currentUser }) => {
-                const account = await Account.findOne({ owner: currentUser });
+                if (!currentUser) throw new AuthenticationError('you must be logged in')
+
+                //Find account and check for the owner
+                const account = await Account.findOne({ name: args.name });
+                if (account) {
+                    if (!account.owner === currentUser) throw new UserInputError('account not found.');
+                }
+
                 if (args.amount > account.balance) {
                     throw new UserInputError(
                         "decline: not enough funds in the account", {
                         invalidArgs: args.amount
                     }
-                    )
-                }
+                    );
+                };
                 account.balance = account.balance - args.amount;
-                await account.save()
-                    .catch((error) => {
-                        throw new UserInputError(error.message);
-                    });
 
                 // creating a new transaction and save it to DB
-                const transaction = new Transaction({ ...args, type: "spend", owner: currentUser });
+                const transaction = new Transaction({ ...args, type: "spend", forAccount: account });
+                // add transaction to account
+                account.transactions.push(transaction);
                 try {
                     await transaction.save()
+                    await account.save()
                 } catch (error) {
                     throw new UserInputError(error.message);
                 }

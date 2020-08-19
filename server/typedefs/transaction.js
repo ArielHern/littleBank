@@ -9,7 +9,7 @@ module.exports = {
         amount: Float!
         type: String!
         memo: String
-        owner: User!
+        forAccount: Account!
         id: ID!
     }
 
@@ -28,7 +28,7 @@ module.exports = {
     }
       
       extend type Mutation {
-        createTrasaction(amount: Float!, type: String!, memo: String): Transaction!
+        createTrasaction(name:String!, amount: Float!, type: String!, memo: String): Transaction!
       }
       
       extend type Subscription {
