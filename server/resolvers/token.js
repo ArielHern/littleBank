@@ -1,10 +1,9 @@
 const { UserInputError } = require('apollo-server');
-const bycrypt = require('bcrypt');
+const bcrypt = require('bcrypt');
 
 
 const jwt = require('jsonwebtoken');
 const User = require('../model/user');
-const Account = require('../model/account');
 
 const config = require('../utils/config');
 
@@ -35,7 +34,7 @@ module.exports = {
             signUp: async (_, args) => {
                 //password encryption
                 const saltRounds = 10
-                const passwordHash = await bycrypt.hash(args.password, saltRounds);
+                const passwordHash = await bcrypt.hash(args.password, saltRounds);
 
                 //Create new user
                 const newUser = new User({
@@ -50,15 +49,6 @@ module.exports = {
                             invalidArgs: args
                         });
                     });
-                //Create a new Account with $0 balance
-                const account = new Account({ balance: 0, owner: newUser });
-                try {
-                    await account.save()
-                } catch (error) {
-                    throw new UserInputError(error.message, {
-                        invalidArgs: args
-                    });
-                }
 
                 const userToken = {
                     username: newUser.username,
