@@ -14,14 +14,10 @@ const schema = new mongoose.Schema({
         minlength: 3,
         required: true
     },
-    account: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Account'
-    },
-    transactions: [
+    accounts: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Transaction'
+            ref: 'Account'
         }
     ]
 });

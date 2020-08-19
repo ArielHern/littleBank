@@ -5,7 +5,13 @@ const schema = new mongoose.Schema({
     owner: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
-    }
+    },
+    transactions: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Transaction'
+        }
+    ]
 });
 
 module.exports = mongoose.model('Account', schema);

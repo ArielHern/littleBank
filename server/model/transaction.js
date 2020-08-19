@@ -10,9 +10,9 @@ const schema = new mongoose.Schema({
         required: true
     },
     memo: String,
-    owner: {
+    forAccount: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User"
+        ref: "Account"
     }
 },
     {
@@ -20,4 +20,4 @@ const schema = new mongoose.Schema({
     }
 )
 
-module.exports = mongoose.model('TransactionCopy', schema);
+module.exports = mongoose.model('Transaction', schema);
