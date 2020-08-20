@@ -4,6 +4,7 @@ const pubsub = new PubSub()
 
 const Account = require('../model/account');
 const Transaction = require('../model/transaction');
+const User = require('../model/user');
 
 module.exports = {
     resolvers: {
@@ -36,8 +37,13 @@ module.exports = {
                 };
 
                 account = new Account({ ...args, owner: currentUser });
+
+                // Add account to user
+                const user = await User.findOne({ username: currentUser.username });
+                user.accounts.push(account)
                 try {
                     await account.save()
+                    await user.save()
                 } catch (error) {
                     throw new UserInputError(error.message, {
                         invalidArgs: args
