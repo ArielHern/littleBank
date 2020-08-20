@@ -31,6 +31,18 @@ query($cursor: String) {
     }
   }  
 `
+export const ME = gql`
+query{
+    me{
+        username
+        name
+        accounts{
+            name
+            balance
+        }
+    }
+}
+`
 
 export const DEPOSIT = gql`
 mutation deposit($amount:Float!, $memo:String){
