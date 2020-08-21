@@ -32,16 +32,24 @@ query($cursor: String) {
   }  
 `
 export const ME = gql`
-query{
-    me{
-        username
-        name
-        accounts{
-            name
-            balance
-        }
+query {
+  me {
+    username
+    name
+    accounts {
+      id
+      name
+      balance
+      transactions{
+        amount
+        type
+        createdAt
+        memo
+      }
     }
+  }
 }
+
 `
 
 export const DEPOSIT = gql`

@@ -23,6 +23,12 @@ module.exports = {
 
             }
         },
+        Account: {
+            transactions: async (root) => {
+                return await Transaction.find({ forAccount: root });
+            }
+        },
+
         Mutation: {
             createAccount: async (_, args, { currentUser }) => {
                 //Must be log on to create account
