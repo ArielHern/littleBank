@@ -2,14 +2,10 @@ import React from 'react'
 import { Container, Divider, Table } from 'semantic-ui-react'
 import moment from 'moment';
 
+import { Account, Transaction } from '../../graphql/types';
 
-interface account {
-    name: string,
-    balance: number
-}
+const AccountDisplay: React.FC<{ account: Account[] }> = ({ account }) => {
 
-const Account: React.FC<{ account: any }> = ({ account }) => {
-    const { accounts } = account
 
     const formatDateFrom = (date: Date) => {
         return moment(date).format('MM-DD-YYYY');
@@ -20,8 +16,8 @@ const Account: React.FC<{ account: any }> = ({ account }) => {
         <div>
             <Divider />
             <Container>
-                {accounts.map((acc: any) =>
-                    <div>
+                {account.map((acc: Account) =>
+                    <div key={acc.id}>
                         <h2>{acc.name}</h2>
                         <h3>Balance: ${acc.balance}</h3>
 
@@ -35,7 +31,7 @@ const Account: React.FC<{ account: any }> = ({ account }) => {
                                         <Table.HeaderCell>Description</Table.HeaderCell>
                                     </Table.Row>
                                 </Table.Header>
-                                {acc.transactions.map((transaction: any, index: any) => {
+                                {acc.transactions.map((transaction: Transaction, index: number) => {
                                     return (
                                         <Table.Body key={index}>
                                             <Table.Row key={transaction.id}>
@@ -62,4 +58,4 @@ const Account: React.FC<{ account: any }> = ({ account }) => {
     )
 }
 
-export default Account;
+export default AccountDisplay;

@@ -1,13 +1,10 @@
 import React from 'react'
-import { Container } from 'semantic-ui-react'
-import { Link } from 'react-router-dom'
+import { Container } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
 
-interface account {
-    name: string,
-    balance: number
-}
+import { Account } from '../../graphql/types';
 
-const Accounts: React.FC<{ accounts: any[] }> = ({ accounts }) => {
+const Accounts: React.FC<{ accounts: Account[] }> = ({ accounts }) => {
 
     return (
         <Container>
