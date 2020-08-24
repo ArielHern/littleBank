@@ -1,15 +1,14 @@
 import { useMutation } from '@apollo/client';
-import React from 'react';
+import React, { SetStateAction } from 'react';
 import { Button, Container, Divider, Form, FormProps, TextArea, DropdownProps } from 'semantic-ui-react';
 import { DEPOSIT, SPEND } from '../../graphql/queries';
 
-interface Transaction {
-    amount: number;
-    transactionType: string;
-    memo: string
+
+interface Iprops {
+    toggleTransaction: () => void
 }
 
-const TransactionForm: React.FC = () => {
+const TransactionForm: React.FC<Iprops> = ({ toggleTransaction }) => {
     const [deposit] = useMutation(DEPOSIT)
     const [spend] = useMutation(SPEND)
     const [transactionType, setTransactionType] = React.useState('')
@@ -22,6 +21,9 @@ const TransactionForm: React.FC = () => {
         { key: 's', text: 'Spend', value: 'spend' },
     ]
 
+    const buttonStyle = {
+        marginBottom: "10px"
+    }
 
     const handleTransaction = (e: React.SyntheticEvent<HTMLElement>, data: any): void => {
         e.preventDefault();
@@ -39,7 +41,8 @@ const TransactionForm: React.FC = () => {
         e.preventDefault();
         switch (transactionType) {
             case 'deposit':
-                deposit({ variables: { amount, memo } });
+                //deposit({ variables: { amount, memo } });
+                console.log(amount);
                 break;
             case 'spend':
                 spend({ variables: { amount, memo } });
@@ -72,6 +75,7 @@ const TransactionForm: React.FC = () => {
                         options={options}
                         placeholder='Type'
                         onChange={handleTransaction}
+
                     />
                 </Form.Group>
                 <TextArea
@@ -83,6 +87,7 @@ const TransactionForm: React.FC = () => {
             </Form>
             <Divider />
             <Button type="submit" color="green" onClick={handleSubmit}>Submit</Button>
+            <Button style={buttonStyle} type="submit" color="red" onClick={toggleTransaction}>Cancel</Button>
         </Container>
     )
 }

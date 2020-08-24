@@ -1,15 +1,18 @@
 import React from 'react'
-import { Container, Divider, Table, Button } from 'semantic-ui-react'
+import { Container, Divider, Table, Button, Form } from 'semantic-ui-react'
 import moment from 'moment';
 
 import { Transaction } from '../../graphql/types';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { TRANSACTIONS_HISTORY, ACCOUNT_INFO } from '../../graphql/queries';
+import TransactionForm from '../transaction/TransactionForm';
 
 
 
 const AccountDisplay: React.FC = () => {
+    const [newTransaction, setNewTransactions] = React.useState<boolean>(false);
+
     //Get id from url
     const { id } = useParams();
 
@@ -26,10 +29,14 @@ const AccountDisplay: React.FC = () => {
         return moment(date).format('MM-DD-YYYY');
     }
     const buttonStyle = {
-        marginTop: "10px"
+        marginBottom: "10px"
+    }
+    const toggleTransaction = () => {
+        setNewTransactions(!newTransaction);
     }
 
     if (loading) return null;
+
 
     return (
         <div>
@@ -38,6 +45,9 @@ const AccountDisplay: React.FC = () => {
                 <h2>{account?.accountInfo.name}</h2>
                 <hr />
                 <h5>Balance: ${account?.accountInfo.balance}</h5>
+                {newTransaction ? null : <Button onClick={toggleTransaction} style={buttonStyle} size="small" color="teal">New Transaction</Button>}
+
+                {newTransaction ? <TransactionForm toggleTransaction={toggleTransaction} /> : null}
                 <Container>
                     <div>
                         {data ? (
@@ -71,7 +81,6 @@ const AccountDisplay: React.FC = () => {
                         )
                             : <div> not Transactions</div>}
                     </div>
-                    <Button style={buttonStyle} size="small" color="teal">New Transaction</Button>
                 </Container>
             </Container >
         </div >
