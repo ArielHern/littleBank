@@ -9,27 +9,31 @@ mutation login($username:String!, $password:String!){
 }
 `
 
-export const BALANCE = gql`
-query{
+export const ACCOUNT_INFO = gql`
+query($id: String!) {
+  accountInfo(id: $id) {
     balance
+    name
+  }
 }
+
 `
 export const TRANSACTIONS_HISTORY = gql`
-query($cursor: String) {
-    transactions(cursor: $cursor){
-        edges {
-            createdAt
-            amount
-            type
-            memo
-            id
-        }
-        pageInfo{
-            endCursor
-            hasNextPage
-        }
+query($cursor: String, $id: String!) {
+    transactions(cursor: $cursor, id: $id) {
+    edges {
+      createdAt
+      amount
+      type
+      memo
+      id
     }
-  }  
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+  }
+}
 `
 export const ME = gql`
 query {
