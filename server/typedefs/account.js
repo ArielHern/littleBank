@@ -11,7 +11,7 @@ module.exports = {
     }
 
     extend type Query{
-        balance:Float!
+        accountInfo(id:String!): Account!
     }
     
     extend type Mutation{

@@ -13,13 +13,13 @@ const toCursorHash = string => Buffer.from(string).toString('base64');
 module.exports = {
     resolvers: {
         Query: {
-            transactions: async (_, { name, cursor, limit = 5 }, { currentUser }) => {
+            transactions: async (_, { id, cursor, limit = 10 }, { currentUser }) => {
                 // Must be authenticated
                 if (!currentUser) throw new AuthenticationError('you must be logged in')
 
                 //find account in DB
+                const account = await Account.findOne({ _id: id, owner: currentUser });
 
-                const account = await Account.findOne({ name: name, owner: currentUser });
                 const cursorOptions = cursor
                     ? {
                         createdAt: {
@@ -50,6 +50,7 @@ module.exports = {
                 };
             }
         },
+
         Mutation: {
             createTrasaction: async (_, args, { currentUser }) => {
                 // Must be authenticated

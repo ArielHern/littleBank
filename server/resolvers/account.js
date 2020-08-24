@@ -9,12 +9,11 @@ const User = require('../model/user');
 module.exports = {
     resolvers: {
         Query: {
-            balance: async (_, args, { currentUser }) => {
+            accountInfo: async (_, { id }, { currentUser }) => {
                 if (!currentUser) throw new AuthenticationError('you must be logged in')
 
                 try {
-                    const account = await Account.findOne({ owner: currentUser });
-                    return account.balance;
+                    return await Account.findOne({ _id: id, owner: currentUser });
                 } catch (error) {
                     throw new UserInputError(error.message, {
                         invalidArgs: args
