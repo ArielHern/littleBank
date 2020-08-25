@@ -79,7 +79,7 @@ const AccountDisplay: React.FC = () => {
                             </Table>
 
                         )
-                            : <div> not Transactions</div>}
+                            : <div> No Transactions</div>}
                     </div>
                 </Container>
             </Container >
