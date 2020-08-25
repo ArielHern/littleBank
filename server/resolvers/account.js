@@ -61,7 +61,7 @@ module.exports = {
                 if (!currentUser) throw new AuthenticationError('you must be logged in')
 
                 //Find account and check for the owner
-                const account = await Account.findOne({ name: args.name });
+                const account = await Account.findOne({ _id: args.id });
                 if (account) {
                     if (!account.owner === currentUser) throw new UserInputError('account not found.');
                 }
@@ -88,7 +88,7 @@ module.exports = {
                 if (!currentUser) throw new AuthenticationError('you must be logged in')
 
                 //Find account and check for the owner
-                const account = await Account.findOne({ name: args.name });
+                const account = await Account.findOne({ _id: args.id });
                 if (account) {
                     if (!account.owner === currentUser) throw new UserInputError('account not found.');
                 }
