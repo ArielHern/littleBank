@@ -1,14 +1,16 @@
 import { useMutation } from '@apollo/client';
 import React, { SetStateAction } from 'react';
-import { Button, Container, Divider, Form, FormProps, TextArea, DropdownProps } from 'semantic-ui-react';
+import { Button, Container, Divider, Form, FormProps, TextArea, DropdownProps, TextAreaProps } from 'semantic-ui-react';
 import { DEPOSIT, SPEND } from '../../graphql/queries';
 
 
 interface Iprops {
     toggleTransaction: () => void
+    id: any
 }
 
-const TransactionForm: React.FC<Iprops> = ({ toggleTransaction }) => {
+
+const TransactionForm: React.FC<Iprops> = ({ toggleTransaction, id }) => {
     const [deposit] = useMutation(DEPOSIT)
     const [spend] = useMutation(SPEND)
     const [transactionType, setTransactionType] = React.useState('')
@@ -25,15 +27,15 @@ const TransactionForm: React.FC<Iprops> = ({ toggleTransaction }) => {
         marginBottom: "10px"
     }
 
-    const handleTransaction = (e: React.SyntheticEvent<HTMLElement>, data: any): void => {
+    const handleTransactionType = (e: React.SyntheticEvent<HTMLElement>, data: DropdownProps): void => {
         e.preventDefault();
-        setTransactionType(data.value);
+        setTransactionType(data?.value as string);
 
     }
 
-    const handleMemo = (e: React.FormEvent<HTMLTextAreaElement>, data: any): void | undefined => {
+    const handleMemo = (e: React.FormEvent<HTMLTextAreaElement>, data: TextAreaProps): void | undefined => {
         e.preventDefault();
-        setMemo(data.value);
+        setMemo(data?.value as string);
 
     }
 
@@ -41,29 +43,23 @@ const TransactionForm: React.FC<Iprops> = ({ toggleTransaction }) => {
         e.preventDefault();
         switch (transactionType) {
             case 'deposit':
-                //deposit({ variables: { amount, memo } });
-                console.log(amount);
+                deposit({ variables: { id, amount, memo } });
+                toggleTransaction()
                 break;
             case 'spend':
-                spend({ variables: { amount, memo } });
+                spend({ variables: { id, amount, memo } });
+                toggleTransaction()
                 break;
             default:
                 break;
         }
     }
 
-    const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>, data: FormProps) => {
-        e.preventDefault()
-        setMemo('');
-        setTransactionType('');
-        setAmount(0);
-
-    }
 
     return (
         <Container textAlign='left'>
             <Divider />
-            <Form onSubmit={handleFormSubmit}>
+            <Form>
                 <Form.Group widths={8}>
                     <Form.Input
                         fluid label='Amount'
@@ -74,7 +70,7 @@ const TransactionForm: React.FC<Iprops> = ({ toggleTransaction }) => {
                         label='Type'
                         options={options}
                         placeholder='Type'
-                        onChange={handleTransaction}
+                        onChange={handleTransactionType}
 
                     />
                 </Form.Group>

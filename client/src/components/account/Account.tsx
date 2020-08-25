@@ -47,7 +47,7 @@ const AccountDisplay: React.FC = () => {
                 <h5>Balance: ${account?.accountInfo.balance}</h5>
                 {newTransaction ? null : <Button onClick={toggleTransaction} style={buttonStyle} size="small" color="teal">New Transaction</Button>}
 
-                {newTransaction ? <TransactionForm toggleTransaction={toggleTransaction} /> : null}
+                {newTransaction ? <TransactionForm toggleTransaction={toggleTransaction} id={id} /> : null}
                 <Container>
                     <div>
                         {data ? (
