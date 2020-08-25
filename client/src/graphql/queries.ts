@@ -57,18 +57,18 @@ query {
 `
 
 export const DEPOSIT = gql`
-mutation deposit($amount:Float!, $memo:String){
-    deposit(amount:$amount, memo:$memo){
-        balance
-    }
+mutation deposit($id: String!, $amount: Float!, $memo: String) {
+  deposit(id: $id, amount: $amount, memo: $memo) {
+    balance
+  }
 }
 `
 
 export const SPEND = gql`
-mutation spend($amount:Float!, $memo:String){
-    spend(amount:$amount, memo:$memo){
-        balance
-    }
+mutation spend($id: String!, $amount: Float!, $memo: String) {
+  spend(id: $id, amount: $amount, memo: $memo) {
+    balance
+  }
 }
 `
 
