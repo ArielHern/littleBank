@@ -24,7 +24,7 @@ module.exports = {
         },
         Account: {
             transactions: async (root) => {
-                return await Transaction.find({ forAccount: root });
+                return await Transaction.find({ forAccount: root }).limit(5);
             }
         },
 

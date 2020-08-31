@@ -1,9 +1,9 @@
 import React from 'react';
-import { Container, Divider } from 'semantic-ui-react';
+import { Divider, Icon } from 'semantic-ui-react';
 import { useQuery } from '@apollo/client';
 
 import { ME } from "../graphql/queries";
-import Account from './account/Accounts';
+import Accounts from './account/Accounts';
 
 interface greeating {
     message: String
@@ -34,18 +34,21 @@ const Home: React.FC = () => {
 
 
     return (
-        <Container>
+        <div >
             {data.me && (
                 <div>
                     <Divider />
-                    <h1 style={{ textTransform: "capitalize" }}>{greeting?.message}, {data.me.name}</h1>
+                    <Icon.Group size='big' style={{ float: "left" }}>
+                        <Icon size='big' name='circle outline' />
+                        <Icon name='user' />
+                    </Icon.Group>
+                    <h1>{greeting?.message}, {data.me.name}</h1>
+
                     <Divider />
-                    <Account accounts={data.me.accounts} />
+                    <Accounts accounts={data.me.accounts} />
                 </div>
             )}
-
-
-        </Container>
+        </div>
     )
 }
 

@@ -1,7 +1,8 @@
-import React from 'react'
-import { useMutation } from '@apollo/client'
+import React from 'react';
+import { useMutation } from '@apollo/client';
+import { Segment, Grid, Form, Button, Divider } from 'semantic-ui-react';
+
 import { LOGIN } from '../graphql/queries'
-import { Segment, Grid, Form, Button, Divider } from 'semantic-ui-react'
 
 interface props {
     setToken: React.Dispatch<string>

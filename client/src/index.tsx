@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
-
+import './index.css';
 import {
     ApolloClient,
     ApolloProvider,
@@ -10,7 +10,7 @@ import {
     split
 } from '@apollo/client'
 import { setContext } from 'apollo-link-context'
-import { getMainDefinition, relayStylePagination } from '@apollo/client/utilities';
+import { getMainDefinition } from '@apollo/client/utilities';
 import { WebSocketLink } from '@apollo/link-ws';
 
 import 'semantic-ui-css/semantic.min.css'
@@ -57,16 +57,8 @@ const splitLink = split(
 
 const client = new ApolloClient({
     link: splitLink,
-    cache: new InMemoryCache({
-        typePolicies: {
-            Query: {
-                fields: {
-                    transactions: relayStylePagination(["query"]),
-                }
-            }
-        }
-    })
-})
+    cache: new InMemoryCache()
+});
 
 
 

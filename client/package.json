@@ -17,7 +17,9 @@
         "moment": "^2.27.0",
         "react": "^16.13.1",
         "react-dom": "^16.13.1",
+        "react-router-dom": "^5.2.0",
         "react-scripts": "3.4.1",
+        "react-waypoint": "^9.0.3",
         "semantic-ui-css": "^2.4.1",
         "semantic-ui-react": "^1.1.1",
         "subscriptions-transport-ws": "^0.9.17",
@@ -44,5 +46,8 @@
             "last 1 firefox version",
             "last 1 safari version"
         ]
+    },
+    "devDependencies": {
+        "@types/react-router-dom": "^5.1.5"
     }
 }

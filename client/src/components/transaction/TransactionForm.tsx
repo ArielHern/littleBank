@@ -1,6 +1,6 @@
 import { useMutation } from '@apollo/client';
-import React, { SetStateAction } from 'react';
-import { Button, Container, Divider, Form, FormProps, TextArea, DropdownProps, TextAreaProps } from 'semantic-ui-react';
+import React from 'react';
+import { Button, Container, Divider, Form, TextArea, DropdownProps, TextAreaProps } from 'semantic-ui-react';
 import { DEPOSIT, SPEND } from '../../graphql/queries';
 
 

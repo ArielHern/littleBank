@@ -1,11 +1,9 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch, useRouteMatch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { useQuery, useSubscription } from '@apollo/client';
-import { Container, Button } from 'semantic-ui-react';
+import { Container } from 'semantic-ui-react';
 import LoadingPage from './components/LoadingPage';
 import LoginForm from './components/LoginForm';
-import TransactionForm from './components/transaction/TransactionForm';
-import Transactions from './components/transaction/Transactions';
 import Home from './components/Home';
 import Account from './components/account/Account';
 import { ME, BALANCE_CHANGED } from './graphql/queries';
@@ -18,7 +16,6 @@ interface IMe {
 
 function App() {
     const [token, setToken] = React.useState<string>('');
-    const [showTransactions, setShowTransactions] = React.useState<boolean>(false);
     const [AccountBalance, setAccountBalance] = React.useState(0);
     //const { loading, data } = useQuery<Balance>(BALANCE, {
     //    onCompleted: (data) => setAccountBalance(Math.round(data.balance)),
@@ -39,9 +36,6 @@ function App() {
         }
     })
 
-    const showHideTransactions = () => {
-        setShowTransactions(!showTransactions);
-    }
 
     if (!token) {
         return (
@@ -59,35 +53,18 @@ function App() {
     }
 
     return (
-        <div>
+        <Container>
             <Router>
                 <Switch>
-                    <Route path='/accounts/:id'>
-                        <Account account={data?.me?.accounts!} />
-                    </Route>
-                    <Route path="/accounts">
+                    <Route exact path="/accounts">
                         <Home />
                     </Route>
-
-
-                    <div style={{ marginTop: "10px" }}>
-                        <Container textAlign="left"><h1>{`Balance: $${AccountBalance}`}</h1></Container>
-                        <TransactionForm />
-                        <Container>
-                            <div style={{ marginTop: "20px" }}>
-                                <h3>Transactions history <Button
-                                    size="mini"
-                                    color={showTransactions ? "yellow" : "green"}
-                                    onClick={showHideTransactions}>
-                                    {showTransactions ? "Hide" : "View"}
-                                </Button></h3>
-                                {showTransactions ? <Transactions /> : null}
-                            </div>
-                        </Container>
-                    </div>
+                    <Route exact path='/accounts/:id'>
+                        <Account />
+                    </Route>
                 </Switch>
             </Router>
-        </div>
+        </Container>
 
     );
 
