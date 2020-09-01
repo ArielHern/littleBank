@@ -1,14 +1,12 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { useQuery, useSubscription } from '@apollo/client';
 import { Container } from 'semantic-ui-react';
 import LoadingPage from './components/LoadingPage';
 import LoginForm from './components/LoginForm';
-import Home from './components/Home';
-import Account from './components/account/Account';
 import { ME, BALANCE_CHANGED } from './graphql/queries';
 
 import { User } from './graphql/types';
+import NavBar from './components/navigation/NavBar';
 
 interface IMe {
     me: User
@@ -52,18 +50,11 @@ function App() {
         )
     }
 
+
+
     return (
         <Container>
-            <Router>
-                <Switch>
-                    <Route exact path="/accounts">
-                        <Home />
-                    </Route>
-                    <Route exact path='/accounts/:id'>
-                        <Account />
-                    </Route>
-                </Switch>
-            </Router>
+            <NavBar />
         </Container>
 
     );

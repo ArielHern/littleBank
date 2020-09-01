@@ -47,81 +47,83 @@ const AccountDisplay: React.FC = () => {
             e.currentTarget.scrollHeight
         ) {
             console.log('bottom reach');
-            //loadMoreTransactions()
+            loadMoreTransactions()
         }
 
     }
 
     const loadMoreTransactions = () => {
-        fetchMore({
-            variables: {
-                cursor: data.transactions.pageInfo.endCursor
-            },
-            updateQuery: (previousResult: any, { fetchMoreResult }) => {
-                //const previousEntries = previousResult.transactions.edges
-                //const newTransactions = fetchMoreResult.transactions.edges
-                //const newCursor = fetchMoreResult.transactions.pageInfo.endCursor
+        //fetchMore({
+        //    variables: {
+        //        cursor: data.transactions.pageInfo.endCursor
+        //    },
+        //    updateQuery: (previousResult: any, { fetchMoreResult }) => {
+        //        //const previousEntries = previousResult.transactions.edges
+        //        //const newTransactions = fetchMoreResult.transactions.edges
+        //        //const newCursor = fetchMoreResult.transactions.pageInfo.endCursor
 
-                //return {
-                //    cursor: newCursor,
-                //    edges: [...newTransactions, ...previousEntries]
+        //        //return {
+        //        //    cursor: newCursor,
+        //        //    edges: [...newTransactions, ...previousEntries]
 
-                //};
-                //return fetchMoreResult ? fetchMoreResult : previousResult
-            }
-        }
-        )
+        //        //};
+        //        return fetchMoreResult ? fetchMoreResult : previousResult
+        //    }
+        //}
+        //)
     }
     console.log(loadMoreTransactions());
 
     return (
         <div>
-            <Container fluid>
-                <hr />
-                <h2>{account?.accountInfo.name}</h2>
-                <hr />
-                <h5>Balance: ${account?.accountInfo.balance}</h5>
-                {newTransaction ? null : <Button onClick={toggleTransaction} style={buttonStyle} size="small" color="teal">New Transaction</Button>}
+            {data && (
+                <Container fluid>
+                    <h2>{account?.accountInfo.name}</h2>
+                    <hr />
+                    <h5>Balance: ${account?.accountInfo.balance}</h5>
+                    {newTransaction ? null : <Button onClick={toggleTransaction} style={buttonStyle} size="small" color="teal">New Transaction</Button>}
 
-                {newTransaction ? <TransactionForm toggleTransaction={toggleTransaction} id={id} /> : null}
-                <Container>
-                    <div style={{ width: "100%", height: "200px", overflow: "hidden" }} >
-                        {data ? (
-                            <div style={{ height: "200px", overflowY: "scroll", marginRight: "-30px" }} onScroll={handleScroll}>
-                                <Table celled>
-                                    <Table.Header>
-                                        <Table.Row>
-                                            <Table.HeaderCell>Date</Table.HeaderCell>
-                                            <Table.HeaderCell>Amount</Table.HeaderCell>
-                                            <Table.HeaderCell>Type</Table.HeaderCell>
-                                            <Table.HeaderCell>Description</Table.HeaderCell>
-                                        </Table.Row>
-                                    </Table.Header>
-                                    {edges?.map((transaction: Transaction, index: number) =>
-                                        (
-                                            <React.Fragment key={index}>
-                                                <Table.Body>
-                                                    <Table.Row key={transaction.id}>
-                                                        <Table.Cell >{formatDateFrom(transaction.createdAt)}</Table.Cell>
-                                                        <Table.Cell>{transaction.amount}</Table.Cell>
-                                                        <Table.Cell>{transaction.type}</Table.Cell>
-                                                        {transaction.memo
-                                                            ? <Table.Cell>{transaction.memo}</Table.Cell>
-                                                            : <Table.Cell></Table.Cell>
-                                                        }
-                                                    </Table.Row>
-                                                </Table.Body>
-                                            </React.Fragment>
+                    {newTransaction ? <TransactionForm toggleTransaction={toggleTransaction} id={id} /> : null}
+                    <Container>
+                        <div style={{ width: "100%", height: "200px", overflow: "hidden" }} >
+                            {data ? (
+                                <div style={{ height: "200px", overflowY: "scroll", marginRight: "-30px" }} onScroll={handleScroll}>
+                                    <Table celled>
+                                        <Table.Header>
+                                            <Table.Row>
+                                                <Table.HeaderCell>Date</Table.HeaderCell>
+                                                <Table.HeaderCell>Amount</Table.HeaderCell>
+                                                <Table.HeaderCell>Type</Table.HeaderCell>
+                                                <Table.HeaderCell>Description</Table.HeaderCell>
+                                            </Table.Row>
+                                        </Table.Header>
+                                        {edges?.map((transaction: Transaction, index: number) =>
+                                            (
+                                                <React.Fragment key={index}>
+                                                    <Table.Body>
+                                                        <Table.Row key={transaction.id}>
+                                                            <Table.Cell >{formatDateFrom(transaction.createdAt)}</Table.Cell>
+                                                            <Table.Cell>{transaction.amount}</Table.Cell>
+                                                            <Table.Cell>{transaction.type}</Table.Cell>
+                                                            {transaction.memo
+                                                                ? <Table.Cell>{transaction.memo}</Table.Cell>
+                                                                : <Table.Cell></Table.Cell>
+                                                            }
+                                                        </Table.Row>
+                                                    </Table.Body>
+                                                </React.Fragment>
+                                            )
                                         )
-                                    )
-                                    }
-                                </Table>
-                            </div>
-                        )
-                            : <div> No Transactions</div>}
-                    </div>
-                </Container>
-            </Container >
+                                        }
+                                    </Table>
+                                </div>
+                            )
+                                : <div> No Transactions</div>}
+                        </div>
+                    </Container>
+                </Container >
+            )}
+
         </div >
     )
 }

@@ -2,7 +2,7 @@ import { useMutation } from '@apollo/client';
 import React from 'react';
 import { Button, Container, Divider, Form, TextArea, DropdownProps, TextAreaProps } from 'semantic-ui-react';
 import { DEPOSIT, SPEND } from '../../graphql/queries';
-
+import trasnferLogo from './transfer_money.svg';
 
 interface Iprops {
     toggleTransaction: () => void
@@ -55,7 +55,6 @@ const TransactionForm: React.FC<Iprops> = ({ toggleTransaction, id }) => {
         }
     }
 
-
     return (
         <Container textAlign='left'>
             <Divider />
@@ -80,6 +79,8 @@ const TransactionForm: React.FC<Iprops> = ({ toggleTransaction, id }) => {
                     placeholder='Memo (optional)'
                     onChange={handleMemo}
                 />
+                <img className="ui small right floated image" src={trasnferLogo}></img>
+
             </Form>
             <Divider />
             <Button type="submit" color="green" onClick={handleSubmit}>Submit</Button>

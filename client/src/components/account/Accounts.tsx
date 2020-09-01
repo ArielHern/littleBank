@@ -8,12 +8,12 @@ const Accounts: React.FC<{ accounts: Account[] }> = ({ accounts }) => {
     return (
         <div>
             {accounts.map((acc) =>
-                <>
-                    <Container key={acc.name}>
+                <div key={acc.name}>
+                    <Container>
                         <b><Link to={`/accounts/${acc.id}`}>{acc.name}</Link></b> - ${acc.balance}
                     </Container>
 
-                </>
+                </div>
 
             )}
             <div>
